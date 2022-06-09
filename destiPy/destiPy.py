@@ -111,10 +111,7 @@ class DestiPy:
 
         headers = self.getHeaders()
         payload = {}
-        
-        # pre-made path
-        path = "Destiny2/2/Account/4611686018431047411/Character/2305843009645455985/Stats/?dayend=2022-05-30&daystart=2022-05-05&groups=100&modes=69&periodType=2"
-        
+                
         # path creation
         path1 = "Destiny2/"+path_params.get("destinyMembershipType")+"/Account/"+path_params.get("destinyMembershipId")+"/Character"+"/"+path_params.get("characterId")+"/Stats"+"/?dayend="+query_params.get("dayEnd")+"&daystart="+query_params.get("dayStart")+"&groups="+query_params.get("groups")+"&modes="+query_params.get("modes")+"&periodType="+query_params.get("periodType")
 
