@@ -19,6 +19,6 @@ pp = PrettyPrinter()
 # print("")
 
 ish = Player("4611686018445613615", "2")
-ish.populateMembershipDetails()
-ish.populateCharacters()
-ish.printAllCharacters()
+all_data = ish.getAllHandlerData()
+
+pp.pprint(all_data)

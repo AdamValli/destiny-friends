@@ -21,10 +21,10 @@ class Player():
     # no overloaded constructors in Python :(  
     # so I will use default, then use set method/s  
     def __init__(self, destinyId=None, membershipType=None) -> None:
-        self.destinyId = destinyId
-        self.membershipType = membershipType
+        self.initDestinyId = destinyId
+        self.initMembershipType = membershipType
 
-        self.createHandler()
+        self.handler = self.createHandler()
 
         self.addPlayer() # reflexive usage of class method in constructor
         
@@ -47,16 +47,15 @@ class Player():
     def getNumberOfPlayers(cls):
         return cls.number_of_players
     
-    @classmethod
-    def createHandler(cls):
-        cls.handler = DataHandler()
+    def createHandler(self):
+        return DataHandler(dmid=self.getInitDestinyId(), dmtype=self.getInitMembershipType())
     
     # getters
-    def getDestinyId(self):
-        return self.destinyId
+    def getInitDestinyId(self):
+        return self.initDestinyId
     
-    def getDestinyMembershipType(self):
-        return self.membershipType
+    def getInitMembershipType(self):
+        return self.initMembershipType
 
     def getAllMembershipDetails(self):
         return self.membership_details    
@@ -97,11 +96,11 @@ class Player():
             print(f"{key}: {value}")
 
     # setters    
-    def setDestinyId(self, id):
-        self.destinyId = id
+    def setInitDestinyId(self, id):
+        self.initDestinyId = id
     
-    def setMembershipType(self, mtype):
-        self.membershipType = mtype
+    def setInitMembershipType(self, mtype):
+        self.initMembershipType = mtype
 
     def setDisplayName(self, dname):
         self.membership_details.get("destiny")["displayName"] = dname
@@ -179,7 +178,6 @@ class Player():
     
     # retrieve + populate character IDs, avatar, emblem, race, light levels, etc.
     def populateCharacters(self):
-        pp = PrettyPrinter()
         chars_dict = self.handler.getAllCharacters(dmid=self.getMembershipId(), dmtype=self.getMembershipType(), comp=200)
         self.setAllCharacters(chars_dict)
 
@@ -188,6 +186,12 @@ class Player():
         pass
 
     def testHandlerMethod(self):
+        pp = PrettyPrinter()
+        self.handler.populateAllMetaData(dmid=self.getInitDestinyId(), dmtype=self.getInitMembershipType())
+        return self.handler.getData()
 
-        char_profiles = self.handler.testApi(dmid=self.getDestinyId(), dmtype=self.getDestinyMembershipType(), comp="100")
-        return char_profiles
+
+
+    # INTERNAL-USE ONLY
+    def getAllHandlerData(self):
+        return self.handler.getData()
