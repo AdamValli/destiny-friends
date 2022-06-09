@@ -1,0 +1,9 @@
+
+# This class represents a Bungie / Destiny API Wrapper session. 
+
+
+# Usage
+# 1. Create DestiPy session instance
+# 2. Set API_KEY --> setApiKey(API_KEY): 
+#    see bungie.net/developer
+# 3. Call methods to perform GET requests to Bungie API (to your hearts content (within our limits, ofc.))

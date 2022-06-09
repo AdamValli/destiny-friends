@@ -1,0 +1,81 @@
+Bungie API script
+
+key = "1e9e5c9d953f4f73aeaac1e3bc27efd6"
+oauth_url = "https://www.bungie.net/en/OAuth/Authorize"
+oauth_client_id = "40399"
+root = "https://www.bungie.net/Platform"
+
+usage: root + /URL_paras ? QUERY_paras
+
+UBZY:
+    lastSeenAsMembershipId:"4611686018504046881"
+    lastSeenAsBungieMembershipType:2 // enum BungieMembershipType "TigerPsn"
+    bungieGlobalDisplayName:"UBZY"
+    bungieGlobalDisplayNameCode:5333
+    onlineStatus:0 // enum PresenceStatus "OfflineOrUnknown"
+    onlineTitle:0 // bitmask PresenceOnlineStateFlags ["None"]
+    relationship:1 // enum FriendRelationshipState "Friend"
+    ▶
+    bungieNetUser:{} 24 keys:
+        membershipId:"26466962"
+        uniqueName:"UBZY#5333"
+        displayName:"UBZY"
+        profilePicture:0
+        profileTheme:0
+        userTitle:0
+        successMessageFlags:"0"
+        isDeleted:false
+        about:""
+        firstAccess:"2020-09-13T18:13:44.345Z"
+        lastUpdate:"2020-09-13T18:13:44.345Z"
+    ▶
+    context:{} 2 keys:
+        psnDisplayName:"UBZY"
+        showActivity:true
+        locale:"en"
+        localeInheritDefault:false
+        showGroupMessaging:true
+        profilePicturePath:"/img/profile/avatars/default_avatar.gif"
+        profileThemeName:"d2cover"
+        userTitleDisplay:"Newbie"
+        statusText:""
+        statusDate:"0001-01-01T00:00:00Z"
+        cachedBungieGlobalDisplayName:"UBZY"
+        cachedBungieGlobalDisplayNameCode:5333
+
+
+Ish:
+    lastSeenAsMembershipId:"4611686018445613615"
+    lastSeenAsBungieMembershipType:2 // enum BungieMembershipType "TigerPsn"
+    bungieGlobalDisplayName:"Ish"
+    bungieGlobalDisplayNameCode:6183
+    onlineStatus:1 // enum PresenceStatus "Online"
+    onlineTitle:2 // bitmask PresenceOnlineStateFlags ["Destiny2"]
+    relationship:1 // enum FriendRelationshipState "Friend"
+▶
+    bungieNetUser:{} 24 keys:
+        membershipId:"11848489"
+        uniqueName:"Ish#6183"
+        displayName:"Ish"
+        profilePicture:70462
+        profileTheme:1000
+        userTitle:0
+        successMessageFlags:"0"
+        isDeleted:false
+        about:""
+        firstAccess:"2015-09-27T01:12:54.067Z"
+        lastUpdate:"2022-03-14T22:38:55.104Z"
+▶
+    context:{} 2 keys:
+        psnDisplayName:"xxish"
+        showActivity:true
+        locale:"en"
+        localeInheritDefault:false
+        showGroupMessaging:true
+        profilePicturePath:
+        profileThemeName:"d2cover"
+        userTitleDisplay:"Newbie"
+        statusText:""
+        statusDate:"0001-01-01T00:00:00Z"
+        cachedBungieGlobalDisplayName:"Ish"
+        cachedBungieGlobalDisplayNameCode:6183
