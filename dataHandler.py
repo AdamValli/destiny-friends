@@ -37,7 +37,7 @@ class DataHandler():
 
     def getData(self):
         return self.data
-    
+    # OLD
     def getDisplayNames(self, id, mtype):
 
         params = {
@@ -67,7 +67,7 @@ class DataHandler():
 
         return displayNames
 
-
+    # OLD
     def getMembershipCodes(self, id, mtype):
         params = {
             "membershipType":mtype,
@@ -97,6 +97,7 @@ class DataHandler():
         }
         return membershipDetails
     
+    # OLD
     # dmid = destiny membership id
     # dmtype = destiny membership type
     # comp = componenet code; 200 for characters, see Bungie API > Destiny.DestinyComponentType 
@@ -118,7 +119,10 @@ class DataHandler():
         return chars
 
 
+        
     # INTERNAL-USE ONLY
+
+    # GET/STORE all profile and character details HERE
     def populateAllMetaData(self, dmid, dmtype):
 
         path_params={
@@ -126,7 +130,7 @@ class DataHandler():
             "membershipType":str(dmtype)
         }
         query_params={
-            "component":"100,200"
+            "component":"100"
         }
 
         # get profile & character dats
@@ -138,18 +142,5 @@ class DataHandler():
 
 
 
-
-    def testApi(self, dmid, dmtype, comp):
-        path_params = {
-            "membershipId":dmid,
-            "membershipType":dmtype
-        }
-        query_params = {
-            "component":comp
-        }
-        response = self.api.getProfile(path_params, query_params)
-        
-        # json -> dict; Return
-        response_dict = json.loads(response)
-
-        return response_dict
+    def testApi(self):
+        pass
