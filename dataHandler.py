@@ -6,141 +6,75 @@ from pprint import PrettyPrinter
 from destiPy.destiPy import DestiPy
 
 # use destiPy to gather / return custom, formatted datasets
+# FUNCTION-BASED CLASS
 class DataHandler():
     API_KEY = "1e9e5c9d953f4f73aeaac1e3bc27efd6"
     def __init__(self, dmid, dmtype):
         self.createApiObject(api_key=self.API_KEY)
         self.data = {}
-        params = {}
-        queries = {}
-        headers = {}
-        print(f"DataHandler has received {dmid} and {dmtype}")
-        self.populateAllMetaData(dmid, dmtype)
+
+        # get meta data upon initialisation
+        self.populateMetaData(dmid, dmtype)
+    
+    
+    # FOR INTERNAL-USE ONLY (PRIVATE)
 
     @classmethod
     def createApiObject(cls, api_key):
         cls.api = DestiPy(api_key)
-
-    def setParams(self, params):
-        self.params = params
-
-    def setQueries(self, queries):
-        self.queries = queries
-    
-    def setAllParams(self, params, queries):
-        self.setParams(params=params)
-        self.setQueries(queries=queries)
-    
+        
+    # add dictionary data to 'data dictionary'
     def addData(self, data):
         for k,v in data.items():
             self.data.setdefault(k,v)
 
     def getData(self):
         return self.data
-    # OLD
-    def getDisplayNames(self, id, mtype):
-
-        params = {
-            "membershipType":mtype,
-            "membershipId":id
-        }
-        queries = {"getAllMemberships":"true"}
-        
-        response = self.api.getLinkedProfiles(path_params=params, query_params=queries)
-        response_dict = json.loads(response)
-
-        profiles_list = response_dict.get("Response").get("profiles")
-        profiles_dict = profiles_list[0]
-
-        bnetMembership_dict = response_dict.get("Response").get("bnetMembership")
-
-        displayNames = {
-            "destiny":{
-                "displayName":profiles_dict.get("displayName"),
-                "bungieGlobalDisplayName": profiles_dict.get("bungieGlobalDisplayName")
-                },
-            "bnetMembership":{
-                "displayName":bnetMembership_dict.get("displayName"),
-                "supplementalDisplayName":bnetMembership_dict.get("supplementalDisplayName"),
-            }
-        }
-
-        return displayNames
-
-    # OLD
-    def getMembershipCodes(self, id, mtype):
-        params = {
-            "membershipType":mtype,
-            "membershipId":id
-        }
-        queries = {"getAllMemberships":"true"}
-                
-        response = self.api.getLinkedProfiles(path_params=params, query_params=queries)
-        response_dict = json.loads(response)
-
-        profiles_list = response_dict.get("Response").get("profiles")
-        profiles_dict = profiles_list[0]
-
-        bnetMembership_dict = response_dict.get("Response").get("bnetMembership")
-
-        membershipDetails = {
-            "destiny":{
-                "membershipId":profiles_dict.get("membershipId"),
-                "membershipType": profiles_dict.get("membershipType")
-                },
-            "bnetMembership":{
-                "bnetMembershipId":bnetMembership_dict.get("membershipId"),
-                "bnetMembershipType":bnetMembership_dict.get("membershipType"),
-                "supplementalDisplayNameCode":bnetMembership_dict.get("supplementalDisplayNameCode")
-
-            }
-        }
-        return membershipDetails
     
-    # OLD
-    # dmid = destiny membership id
-    # dmtype = destiny membership type
-    # comp = componenet code; 200 for characters, see Bungie API > Destiny.DestinyComponentType 
-    def getAllCharacters(self, dmid, dmtype, comp):
-        
+
+    # retrieve basic meta data (profiles) from Bungie API
+    def populateMetaData(self, dmid, dmtype) -> None:
         path_params = {
             "membershipId":str(dmid),
             "membershipType":str(dmtype)
         }
         query_params = {
-            "component":str(comp)
+            "query_get_linked_profiles":{"getAllMemberships":"True"},
+            "query_get_profile":{"components":"100"}
         }
-        response = self.api.getProfile(path_params, query_params)
+        json_linked_profiles = self.api.getLinkedProfiles(query_params=dict(query_params.get("query_get_linked_profiles")), path_params=path_params)
+        dict_linked_profiles = json.loads(json_linked_profiles)
+        self.addData(dict_linked_profiles.get("Response"))
+
+        json_profiles = self.api.getProfile(path_params=path_params, query_params=dict(query_params.get("query_get_profile")))
+        dict_profiles = json.loads(json_profiles)
+        self.addData(dict_profiles.get("Response").get("profile").get("data"))
+
+    
+    # EXTERNAL-USE ONLY (PUBLIC)
+    def retrieveBnetProfileData(self):
         
-        # json -> dict; Return
-        response_dict = json.loads(response)
-        chars = dict(response_dict.get("Response").get("characters").get("data"))
-
-        return chars
-
-
-        
-    # INTERNAL-USE ONLY
-
-    # GET/STORE all profile and character details HERE
-    def populateAllMetaData(self, dmid, dmtype):
-
-        path_params={
-            "membershipId":str(dmid),
-            "membershipType":str(dmtype)
+        # curated data of profile info
+        bnet_data = {
+            "bungieGlobalDisplayName":self.data.get("bnetMembership").get("bungieGlobalDisplayName"),
+            "bungieGlobalDisplayNameCode":self.data.get("bnetMembership").get("bungieGlobalDisplayNameCode"),
+            "displayName":self.data.get("bnetMembership").get("displayName"),
+            "bnetMembershipId":self.data.get("bnetMembership").get("membershipId"),
+            "bnetMembershipType":self.data.get("bnetMembership").get("membershipType"),
+            "supplementalDisplayName":self.data.get("bnetMembership").get("supplementalDisplayName"),
         }
-        query_params={
-            "component":"100"
+        return bnet_data
+
+    
+    def retrieveDestinyProfileData(self):
+        profile_list = self.data.get("profiles")
+        profile_dict = dict(profile_list[0])
+        # curated destiny profile data
+        dest_prof_data = {
+            "bungieGlobalDisplayName":profile_dict.get("bungieGlobalDisplayName"),
+            "bungieGlobalDisplayNameCode":profile_dict.get("bungieGlobalDisplayNameCode"),
+            "displayName":profile_dict.get("displayName"),
+            "destinyMembershipId":profile_dict.get("membershipId"),
+            "destinyMembershipType":profile_dict.get("membershipType")
         }
-
-        # get profile & character dats
-        profile_json = self.api.getProfile(path_params, query_params)
-        profile_dict = json.loads(profile_json)
-
-        # store in this handler object
-        self.addData(profile_dict.get("Response"))
-
-
-
-    def testApi(self):
-        pass
+        return dest_prof_data

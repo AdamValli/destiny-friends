@@ -9,9 +9,10 @@ import users
 pp = PrettyPrinter()
 
 ubzy = Player("4611686018504046881", "2")
-print(ubzy.getBungieGlobalDisplayName())
-all_ubzy_data = ubzy.getAllHandlerData()
-pp.pprint(all_ubzy_data)
+bnet_ubzy_data = ubzy.handlerMethodTestBnet()
+dest_ubzy_data = ubzy.handlerMethodTestProfile()
+pp.pprint(bnet_ubzy_data)
+pp.pprint(dest_ubzy_data)
 print("")
 
 # gundo = Player("4611686018431047411", "2")

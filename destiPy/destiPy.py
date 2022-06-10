@@ -87,6 +87,7 @@ class DestiPy:
         return response.content
 
     # User.GetProfile
+    # RETURN: json
     # get CHARACTERS and more for given Id
     #   path_params: dmid = destiny membership id, mtype = membership type
     #   query_params: component = code for data to retrieve (character, profile, stats) etc. See API Docs for more info.
@@ -98,7 +99,7 @@ class DestiPy:
         payload = {}
         root = self.getRoot()
         
-        url = root + "Destiny2/"+path_params.get("membershipType")+"/Profile/"+path_params.get("membershipId")+"/?components="+query_params.get("component")
+        url = root + "Destiny2/"+path_params.get("membershipType")+"/Profile/"+path_params.get("membershipId")+"/?components="+query_params.get("components")
         response = requests.get(url, headers=headers, data=payload)
         response.raise_for_status
         return response.content
