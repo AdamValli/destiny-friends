@@ -19,24 +19,23 @@ class Player():
     # default constructor
     # sets up data handler for this player + data structures  
     def __init__(self, destinyId=None, membershipType="2") -> None:
+        self.addPlayer() # reflexive usage of class method in constructor
+
         self.initDestinyId = destinyId
         self.initMembershipType = membershipType
-
         self.handler = self.createHandler()
 
-        self.addPlayer() # reflexive usage of class method in constructor
         
         self.profile_data={
-            "character_ids":{},
-            "destiny":{},
-            "bnet":{}
         }
         self.character_data={
-            "characters":{}
         }
 
         self.stats={}
 
+        self.initProfileData()
+        
+    # INTERNAL-USE ONLY. PRIVATE METHODS.
     # usage Player.classMethod(); independant of instance
     @classmethod
     def addPlayer(cls):
@@ -49,23 +48,39 @@ class Player():
     def createHandler(self):
         return DataHandler(dmid=self.getInitDestinyId(), dmtype=self.getInitMembershipType())
     
+    def initProfileData(self):
+        self.profile_data["bnet"]=self.handler.retrieveBnetProfileData()
+        self.profile_data["destiny"]=self.handler.retrieveDestinyProfileData()
+        self.profile_data["characterIds"] = self.handler.retrieveCharacterIds()
+    
+    # PUBLIC
+
     # getters
     def getInitDestinyId(self):
         return self.initDestinyId
     
     def getInitMembershipType(self):
         return self.initMembershipType
+    
+    def getSupplementalDisplayName(self):
+        return self.profile_data.get("bnet").get("supplementalDisplayName")
 
-    def getAllMembershipDetails(self):
+    def getCharacterIds(self):
+        return self.profile_data.get("characterIds")
+
+    def getBnetProfile(self):
+        return self.profile_data.get("bnet")
+
+    def getDestinyProfile(self):
+        return self.profile_data.get("destiny")
+    
+    def getProfile(self):
         return self.profile_data    
     
-
-    # PUBLIC
-
-
     # Test
     def getAllHandlerData(self):
-        return self.handler.retrieveBnetProfileData()
+        self.handler.retrieveCharacterIds()
+        return self.handler.getData()
     
     def handlerMethodTestBnet(self):
         return self.handler.retrieveBnetProfileData()

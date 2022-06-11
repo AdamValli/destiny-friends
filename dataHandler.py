@@ -52,6 +52,7 @@ class DataHandler():
 
     
     # EXTERNAL-USE ONLY (PUBLIC)
+    # return bnet profile data: Dict
     def retrieveBnetProfileData(self):
         
         # curated data of profile info
@@ -65,7 +66,7 @@ class DataHandler():
         }
         return bnet_data
 
-    
+    # return destiny profile data: Dict
     def retrieveDestinyProfileData(self):
         profile_list = self.data.get("profiles")
         profile_dict = dict(profile_list[0])
@@ -78,3 +79,7 @@ class DataHandler():
             "destinyMembershipType":profile_dict.get("membershipType")
         }
         return dest_prof_data
+    
+    # return char_ids: List
+    def retrieveCharacterIds(self):
+        return self.data.get("characterIds")
