@@ -12,8 +12,3 @@ ubzy = Player(users.ubzy.get("destiny_membership_id"), users.ubzy.get("destiny_m
 adam = Player(users.gundo.get("destiny_membership_id"), users.gundo.get("destiny_membership_type"))
 ish = Player(users.ish.get("destiny_membership_id"), users.ish.get("destiny_membership_type"))
 
-
-
-
-
-

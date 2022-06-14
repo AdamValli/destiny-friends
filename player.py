@@ -53,6 +53,9 @@ class Player():
         self.profile_data["destiny"]=self.handler.retrieveDestinyProfileData()
         self.profile_data["characterIds"] = self.handler.retrieveCharacterIds()
     
+    def __str__(self) -> str:
+        return self.getBnetProfile().get("supplementalDisplayName") + "\nMembership ID: " + self.getInitDestinyId() + "\nMembership Type: " + self.getInitMembershipType()
+    
     # PUBLIC
 
     # getters
@@ -76,6 +79,8 @@ class Player():
     
     def getProfile(self):
         return self.profile_data    
+    
+
     
     # Test
     def getAllHandlerData(self):
